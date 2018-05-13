@@ -20,7 +20,7 @@ public class MyConfig implements WXPayConfig {
     private WechatAccountConfig wechatAccountConfig;
 
     public MyConfig() throws Exception {
-        String certPath = "D:/zzh/cert";
+        String certPath = "/developer/git-repository/inform/cert";
         File file = new File(certPath);
         InputStream certStream = new FileInputStream(file);
         this.certData = new byte[(int) file.length()];
