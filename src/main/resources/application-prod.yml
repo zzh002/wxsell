@@ -10,23 +10,23 @@ spring:
       host: 127.0.0.1
       port: 6379
 server:
-  context-path: /sell
-  port: 9000
+   context-path: /sell
+   port: 9000
 
 
 
 
 
 wechat:
-  mpAppId: wx288322c27892a46e
-  mpAppSecret: c03f62364d97ec5f355343a00ca99e0a
-  mchId: 148xxxxx62
-  mchKey: qwertyuiopxxxxxxxxxxxxxnm123456
-  keyPath: D:/HJT/WXtest/wxxxxxxxxxxx_cert.p12
-  notifyUrl: http://chibei.mynatapp.cc/gongcheng/pay/notify
+  mpAppId: wxcd63bfe698a536a5
+  mpAppSecret: 735f99e57f397d14bbaeb00d898d0816
+  mchId: 1502262451
+  mchKey: ci5d7dk430322ddfcvpew334dferce58
+  keyPath: D:/zzh/cert/apiclient_cert.p12
+  notifyUrl: http://wxsell.nat200.top/sell/pay/notify
   templateId:
-    orderStatus: 2xJYx9anxxxxxxxxxxxxxxxxxFqN69Hm2D9A
-    paid: DihomiMxxxxxxxxxxxxxx2e0wH5to1k
+    orderStatus: yOQdE1n9KgkSIqH6di2M8np772JRrNXMyXGDRZnFFp0
+    paid: lNOaJWubiKA_XU5xE0U5X4WFsUHEzVYSz4eM0AF7gC8
 
 projectUrl:
   wechatMpAuthorize: http://wxsell.nat200.top
