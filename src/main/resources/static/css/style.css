@@ -1,0 +1,9 @@
+#wrapper.toggled {
+  padding-left: 90px;
+}
+#wrapper.toggled #sidebar-wrapper {
+  width: 90px;
+}
+#sidebar-wrapper {
+  height: 100%;
+}

@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1/wxsell?characterEncoding=utf-8&useSSL=false
+  jackson:
+    default-property-inclusion: non_null
+  redis:
+      host: 127.0.0.1
+      port: 6379
+server:
+  context-path: /sell
+  port: 9000
+
+
+
+
+
+wechat:
+  mpAppId: wx288322c27892a46e
+  mpAppSecret: c03f62364d97ec5f355343a00ca99e0a
+  mchId: 148xxxxx62
+  mchKey: qwertyuiopxxxxxxxxxxxxxnm123456
+  keyPath: D:/HJT/WXtest/wxxxxxxxxxxx_cert.p12
+  notifyUrl: http://chibei.mynatapp.cc/gongcheng/pay/notify
+  templateId:
+    orderStatus: 2xJYx9anxxxxxxxxxxxxxxxxxFqN69Hm2D9A
+    paid: DihomiMxxxxxxxxxxxxxx2e0wH5to1k
+
+projectUrl:
+  wechatMpAuthorize: http://wxsell.nat200.top
+  wechatOpenAuthorize: http://wxsell.nat200.top
+  sell: http://wxsell.nat200.top
