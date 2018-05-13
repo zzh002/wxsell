@@ -1,6 +1,7 @@
 package com.hnust.wxsell.config;
 
 import com.github.wxpay.sdk.WXPayConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -15,8 +16,11 @@ public class MyConfig implements WXPayConfig {
 
     private byte[] certData;
 
+    @Autowired
+    private WechatAccountConfig wechatAccountConfig;
+
     public MyConfig() throws Exception {
-        String certPath = "D:/HJT/WXtestxxxxxxxxxxxx";
+        String certPath = "D:/zzh/cert";
         File file = new File(certPath);
         InputStream certStream = new FileInputStream(file);
         this.certData = new byte[(int) file.length()];
@@ -25,15 +29,15 @@ public class MyConfig implements WXPayConfig {
     }
 
     public String getAppID() {
-        return "wx735cxxxxxxbb2d";
+        return wechatAccountConfig.getMpAppId();
     }
 
     public String getMchID() {
-        return "148xxxx62";
+        return wechatAccountConfig.getMchId();
     }
 
     public String getKey() {
-        return "qwertyuixxxxxxxxxxxxxxxx3456";
+        return wechatAccountConfig.getMchKey();
     }
 
     public InputStream getCertStream() {

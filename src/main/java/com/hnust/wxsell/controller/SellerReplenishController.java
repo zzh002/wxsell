@@ -98,7 +98,7 @@ public class SellerReplenishController {
      */
     @PostMapping("/finish")
     public ResultVO finish(@Valid ReplenishFrom replenishFrom,
-                           @RequestHeader("token") String token,
+                           @RequestParam("token") String token,
                            BindingResult bindingResult,
                            HttpServletResponse response){
         response.addHeader("Access-Control-Allow-Origin","*");

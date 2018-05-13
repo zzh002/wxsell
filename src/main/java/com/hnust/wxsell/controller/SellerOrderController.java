@@ -150,7 +150,7 @@ public class SellerOrderController {
     }
 
     /**
-     * 查询最近订单列表
+     * 订单销售统计
      * @param orderListForm
      * @return
      */

@@ -13,6 +13,7 @@ public class ReplenishFrom {
    // @NotEmpty(message = "寝室编号不能为空")
     private String groupNo;
 
+
     @NotEmpty(message = "补货不能为空")
     private String items;
 }

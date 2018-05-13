@@ -51,10 +51,16 @@ public class PushMessageServiceImpl implements PushMessageService {
         templateMessage.setToUser(orderDTO.getUserOpenid());
         templateMessage.setUrl(projectUrlConfig.getSell() + "/sell/pay/view?orderId=" + orderDTO.getOrderId());
 
+        //拼装订单商品详情信息
+        String productDetail = " \n";
+        for (OrderDetail orderDetail: orderDTO.getOrderDetailList()){
+            productDetail = productDetail.concat(orderDetail.getProductName() + " 数量: "+ orderDetail.getProductQuantity().toString() + "\n");
+        }
         List<WxMpTemplateData> data = Arrays.asList(
-                new WxMpTemplateData("first", "纯享吃呗订单","#589E63"),
-                new WxMpTemplateData("OrderSn", orderDTO.getOrderId()),
-                new WxMpTemplateData("OrderStatus", orderDTO.getPayStatusEnum().getMessage()),
+                new WxMpTemplateData("first", "自助零食箱订单","#589E63"),
+                new WxMpTemplateData("keyword1", orderDTO.getOrderId(),"#589E63"),
+                new WxMpTemplateData("keyword2", productDetail,"#589E63"),
+                new WxMpTemplateData("keyword3","￥"+ orderDTO.getOrderAmount().toString(),"#589E63"),
                 new WxMpTemplateData("remark", "点击“详情”查看完整订单信息")
         );
         templateMessage.setData(data);
@@ -97,12 +103,16 @@ public class PushMessageServiceImpl implements PushMessageService {
         templateMessage.setToUser(openid);
         templateMessage.setUrl(projectUrlConfig.getSell() + "/sell/pay/view?orderId=" + orderDTO.getOrderId());
 
+        orderListAmount = orderListAmount.add(orderDTO.getOrderAmount());
         List<WxMpTemplateData> data = Arrays.asList(
                 new WxMpTemplateData("first",
-                        "今日第"+ String.valueOf(orderDTOList.size())+ "单，"+ orderDTO.getGroupNo() + "支付成功" +
+                        "今日第"+ String.valueOf(orderDTOList.size()+1)+ "单，"+ orderDTO.getGroupNo() + "支付成功" +
                                 "\n"+ "累计收入: ￥" + orderListAmount.toString() ,"#589E63"),
-                new WxMpTemplateData("orderMoneySum", "￥"+orderDTO.getOrderAmount().toString(),"#589E63"),
-                new WxMpTemplateData("orderProductName", productDetail,"#589E63"),
+                new WxMpTemplateData("keyword1", "自助零食箱订单","#589E63"),
+                new WxMpTemplateData("keyword2", orderDTO.getGroupNo(),"#589E63"),
+                new WxMpTemplateData("keyword3", "￥"+orderDTO.getOrderAmount().toString(),"#589E63"),
+                new WxMpTemplateData("keyword4", DateUtil.getDateToStr(orderDTO.getCreateTime()),"#589E63"),
+                new WxMpTemplateData("keyword5", orderDTO.getOrderId(),"#589E63"),
                 new WxMpTemplateData("Remark", orderDTO.getGroupNo()+" 剩余商品总金额: ￥" + groupMasterDTO.getGroupAmount().toString(),"#589E63")
         );
         templateMessage.setData(data);

@@ -55,7 +55,7 @@ public class GroupReplenishController {
 
     @PostMapping("/MaCreate")
     public ResultVO<Map<String, String>> MaCreate(@Valid ReplenishFrom replenishFrom,
-                                                  @RequestHeader("token") String token,
+                                                  @RequestParam("token") String token,
                                                   BindingResult bindingResult,
                                                   HttpServletResponse response){
 
@@ -91,7 +91,7 @@ public class GroupReplenishController {
 
     @PostMapping("/WxCreate")
     public ResultVO<Map<String, String>> WxCreate(@Valid ReplenishFrom replenishFrom,
-                                                  @RequestHeader("token") String token,
+                                                  @RequestParam("token") String token,
                                                   BindingResult bindingResult,
                                                   HttpServletResponse response){
 

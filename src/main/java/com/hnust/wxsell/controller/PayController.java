@@ -80,23 +80,11 @@ public class PayController {
     }
 
     @GetMapping("/view")
-    public ResultVO success(@RequestParam("orderId") String orderId){
+    public ModelAndView success(@RequestParam("orderId") String orderId,
+                                Map<String, Object> map){
 
         OrderDTO orderDTO = orderService.findOne(orderId);
-        List<OrderDetail> orderDetailList = orderDTO.getOrderDetailList();
-
-        OrderDTOVO orderDTOVO = new OrderDTOVO();
-        BeanUtils.copyProperties(orderDTO, orderDTOVO);
-      //  orderDTOVO.setOrderStatus(orderDTO.getOrderStatusEnum().getMessage());
-      //  orderDTOVO.setPayStatus(orderDTO.getPayStatusEnum().getMessage());
-
-        List<OrderDetailVO> orderDetailVOList = new ArrayList<>();
-        for (OrderDetail orderDetail : orderDetailList){
-            OrderDetailVO orderDetailVO = new OrderDetailVO();
-            BeanUtils.copyProperties(orderDetail , orderDetailVO);
-            orderDetailVOList.add(orderDetailVO);
-        }
-        orderDTOVO.setOrderDetailVOList(orderDetailVOList);
-        return ResultVOUtil.success(orderDTOVO);
+        map.put("orderDTO", orderDTO);
+        return new ModelAndView("pay/view");
     }
 }

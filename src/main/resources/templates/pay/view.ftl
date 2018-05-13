@@ -1,11 +1,21 @@
 <html>
 <head><title>订单详情</title></head>
-<#include "../common/header.ftl">
-
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
+    <title>卖家后端管理系统</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/sell/css/style.css">
+    <link rel="stylesheet" href="/sell/css/my-style.css">
+</head>
 <body id="main-style">
 
 <div class="weui-loadmore weui-loadmore_line">
-    <span class="weui-loadmore__tips">${orderDTO.buyerAddress}</span>
+    <span class="weui-loadmore__tips">${orderDTO.groupNo}</span>
 </div>
 
 <div class="weui-cells__title" style="word-wrap: break-word">
@@ -66,21 +76,25 @@
 <div class='demos-content-padded'>
     <div class="weui-footer" style="margin-top:64px">
         <p class="weui-footer__links">
-        <div class="weui-footer__link" style="color: burlywood">乐享吃呗</div>
+        <div class="weui-footer__link" style="color: burlywood">
+        <a href="http://yzsell.s1.natapp.cc/#/authorize" class="weui-footer__link">奕姿科技</a>
+        </div>
         </p>
-        <p class="weui-footer__text">Copyright © 2018 一一一合</p>
+        <p class="weui-footer__text">Copyright © 2018 </p>
     </div>
 </div>
 <div class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
     <span class="weui-loadmore__tips"></span>
 </div>
 
-<#include  "../common/scriptfoot.ftl">
+<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/jquery-weui.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-weui/1.2.0/js/swiper.min.js"></script>
 
 <script>
     function show_actions(param) {
-        var payUrl = "/sell/pay/create?orderId=" + param.orderId +
-                "&returnUrl=http:/sell/pay/view?orderId="+param.orderId;
+        var payUrl = "http://wxsell.nat200.top/sell/pay/create?orderId=" + param.orderId +
+                "&returnUrl=http://wxsell.nat200.top/sell/pay/view?orderId="+param.orderId;
         $.confirm(param.orderId, "确认支付?", function () {
             window.location.href = payUrl;
         }, function () {

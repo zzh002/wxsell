@@ -19,4 +19,6 @@ public interface SchoolService {
     List<School> findBySchoolNoIn(List<String> schoolNoList);
 
     School save(School school);
+
+    void delete(School school);
 }

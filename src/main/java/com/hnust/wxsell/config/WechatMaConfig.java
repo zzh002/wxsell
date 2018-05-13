@@ -26,8 +26,8 @@ public class WechatMaConfig {
     @Bean
     public WxMaConfig wxMaConfig() {
         WxMaInMemoryConfig wxMaInMemoryConfig = new WxMaInMemoryConfig();
-        wxMaInMemoryConfig.setAppid("wx288322c27892a46e");
-        wxMaInMemoryConfig.setSecret("c03f62364d97ec5f355343a00ca99e0a");
+        wxMaInMemoryConfig.setAppid(accountConfig.getMpAppId());
+        wxMaInMemoryConfig.setSecret(accountConfig.getMpAppSecret());
         return wxMaInMemoryConfig;
     }
 }

@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>成功提示</title>
+    <title>买家中心</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <link href="https://cdn.bootcss.com/bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://res.wx.qq.com/open/libs/weui/1.1.2/weui.min.css">
@@ -15,8 +15,9 @@
     </div>
     <div class="weui-msg__opr-area">
         <p class="weui-btn-area">
-            <a href="http://chibei.mynatapp.cc/buyerInterface/replenishment.html" class="weui-btn weui-btn_primary">补货</a>
-            <a href="http://chibei.mynatapp.cc/buyerInterface/order.html" class="weui-btn weui-btn_default">付款</a>
+            <a href="http://wxsell.nat200.top/buyerInterface/replenishment.html" class="weui-btn weui-btn_primary">零食箱补货</a>
+            <a href="http://wxsell.nat200.top/buyerInterface/order.html" class="weui-btn weui-btn_default">寝室零食箱</a>
+            <a href="http://wxsell.nat200.top/buyerInterface/create.html" class="weui-btn weui-btn_default">申请零食箱</a>
         </p>
     </div>
 <#--底部链接-->

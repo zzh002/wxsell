@@ -60,7 +60,11 @@ public class GroupOrderController {
 
         // 验证token,并查找返回用户信息
         UserMaster userMaster = userTokenService.getUserMaster(token);
-
+        if (userMaster == null){
+            log.error("【用户订单】 ，用户不存在");
+            throw new SellException(ResultEnum.USER_NOT_EXIST.getCode(),
+                    ResultEnum.USER_NOT_EXIST.getMessage());
+        }
         OrderDTO orderDTO = OrderForm2OrderDTOConverter.convert(orderForm);
         orderDTO.setGroupNo(userMaster.getGroupNo());
         orderDTO.setUserOpenid(userMaster.getOpenId());
@@ -87,7 +91,11 @@ public class GroupOrderController {
 
         // 验证token,并查找返回用户信息
         UserMaster userMaster = userTokenService.getUserMaster(token);
-
+        if (userMaster == null){
+            log.error("【用户订单】 ，用户不存在");
+            throw new SellException(ResultEnum.USER_NOT_EXIST.getCode(),
+                    ResultEnum.USER_NOT_EXIST.getMessage());
+        }
         PageRequest request = new PageRequest(page, size);
         Page<OrderDTO> orderDTOPage = orderService.findList(userMaster.getOpenId(), request);
 
@@ -101,7 +109,11 @@ public class GroupOrderController {
 
         // 验证token,并查找返回用户信息
         UserMaster userMaster = userTokenService.getUserMaster(token);
-
+        if (userMaster == null){
+            log.error("【用户订单】 ，用户不存在");
+            throw new SellException(ResultEnum.USER_NOT_EXIST.getCode(),
+                    ResultEnum.USER_NOT_EXIST.getMessage());
+        }
         OrderDTO orderDTO = buyerService.findOrderOne(userMaster.getOpenId(), orderId);
         return ResultVOUtil.success(orderDTO);
     }
@@ -110,10 +122,13 @@ public class GroupOrderController {
     @PostMapping("/cancel")
     public ResultVO cancel(@RequestHeader("token") String token,
                            @RequestParam("orderId") String orderId) {
-
         // 验证token,返回openid
         UserMaster userMaster = userTokenService.getUserMaster(token);
-
+        if (userMaster == null){
+            log.error("【用户订单】 ，用户不存在");
+            throw new SellException(ResultEnum.USER_NOT_EXIST.getCode(),
+                    ResultEnum.USER_NOT_EXIST.getMessage());
+        }
         buyerService.cancelOrder(userMaster.getOpenId(), orderId);
         return ResultVOUtil.success();
     }

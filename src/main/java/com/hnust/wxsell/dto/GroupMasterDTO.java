@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 public class GroupMasterDTO {
 
-    private String gourpId;
+    private String groupId;
 
     /** 宿舍编号. */
     private String groupNo;

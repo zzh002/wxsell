@@ -268,8 +268,8 @@ public class OrderServiceImpl implements OrderService {
             pushMessageService.paid(orderDTO, openid);
         }
 
-        // 给用户推送模板消息
-//        pushMessageService.orderStatus(orderDTO);
+        //TODO 给用户推送模板消息
+        pushMessageService.orderStatus(orderDTO);
 
         return orderDTO;
     }

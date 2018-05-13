@@ -20,12 +20,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.Map;
 
 
 /**
@@ -101,14 +103,15 @@ public class GroupBindController {
     }
 
     @GetMapping("/bindUserInfo")
-    public String bindUserInfo(@RequestParam("code") String code,
-                                     @RequestParam("state") String groupAndSchool) {
+    public ModelAndView bindUserInfo(@RequestParam("code") String code,
+                                     @RequestParam("state") String groupAndSchool,
+                                     Map<String, Object> map) {
         WxMpOAuth2AccessToken wxMpOAuth2AccessToken = new WxMpOAuth2AccessToken();
         try {
             wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
         } catch (WxErrorException e) {
-            log.error("【微信网页授权】{}", e);
-            throw new SellException(ResultEnum.WECHAT_MP_ERROR.getCode(), e.getError().getErrorMsg());
+            map.put("msg", ResultEnum.WECHAT_MP_ERROR.getMessage());
+            return new ModelAndView("common/bindError", map);
         }
         String openId = wxMpOAuth2AccessToken.getOpenId();
         String groupNo = new String();
@@ -130,12 +133,11 @@ public class GroupBindController {
         try {
             userMasterService.save(userMaster);
         }catch (SellException e){
-            log.error("【微信网页授权】{}", e);
-            throw new SellException(ResultEnum.WECHAT_MP_ERROR);
+            map.put("msg", ResultEnum.BIND_FAIL.getMessage());
+            return new ModelAndView("common/bindError", map);
         }
 
-        //TODO
-      return "redirect:" + projectUrlConfig.getSell() + "/buyerInterface/replenishment.html";
+        return new ModelAndView("common/bindSuccess", map);
 
     }
 
@@ -182,7 +184,7 @@ public class GroupBindController {
                 ,schoolNo,rank,schoolAndrank);
 
         //TODO
-        return "redirect:" + projectUrlConfig.getSell() + "/sell/register.html?"
+        return "redirect:" + projectUrlConfig.getSell() + "/#/register"
                 + "openid=" + openId
                 + "&schoolNo=" + schoolNo
                 + "&rank=" + Integer.parseInt(rank)

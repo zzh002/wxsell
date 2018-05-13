@@ -1,6 +1,7 @@
 package com.hnust.wxsell.utils;
 
 import java.text.DateFormat;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,5 +50,29 @@ public class DateUtil {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
         return df.format(tomorrow);
+    }
+
+    /**
+     * Date-String
+     * @param date
+     * @return
+     */
+    public static String getDateToStr(Date date) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        return df.format(date);
+    }
+
+    /**
+     * String-Date
+     * @param date
+     * @return
+     */
+    public static Date getStrToDate(String date) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        ParsePosition pos = new ParsePosition(0);
+        Date strtodate = df.parse(date, pos);
+        return strtodate;
     }
 }

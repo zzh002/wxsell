@@ -58,7 +58,6 @@ public class SellerController {
         SellerInfo sellerInfo = new SellerInfo();
         response.addHeader("Access-Control-Allow-Origin","*");
         response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
-        //TODO
         if (bindingResult.hasErrors()) {
             throw new SellException(ResultEnum.PARAM_ERROR.getCode(),
                     bindingResult.getFieldError().getDefaultMessage());

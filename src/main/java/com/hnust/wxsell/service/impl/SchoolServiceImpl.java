@@ -41,4 +41,9 @@ public class SchoolServiceImpl implements SchoolService {
     public School save(School school) {
         return repositroy.save(school);
     }
+
+    @Override
+    public void delete(School school) {
+        repositroy.delete(school);
+    }
 }

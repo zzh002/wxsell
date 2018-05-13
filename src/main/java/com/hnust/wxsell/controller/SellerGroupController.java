@@ -89,7 +89,7 @@ public class SellerGroupController {
     }
 
     /**
-     * 寝室分区
+     * 寝室分区/token
      * @param token
      * @return
      */
@@ -97,6 +97,17 @@ public class SellerGroupController {
     public ResultVO district(@RequestParam("token") String token){
         SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
         List<GroupDistrict> groupDistrictList = districtService.findAll(sellerInfo.getSchoolNo());
+        return ResultVOUtil.success(groupDistrictList);
+    }
+
+    /**
+     *  寝室分区/schoolNo
+     * @param schoolNo
+     * @return
+     */
+    @GetMapping("/districtList")
+    public ResultVO districts(@RequestParam("schoolNo") String schoolNo){
+        List<GroupDistrict> groupDistrictList = districtService.findAll(schoolNo);
         return ResultVOUtil.success(groupDistrictList);
     }
 

@@ -124,7 +124,7 @@ public class SellerProductController {
     }
 
     /**
-     *修改商品信息
+     *商品信息
      * @param productId
      * @param token
      * @return
@@ -184,16 +184,18 @@ public class SellerProductController {
         }
 
         ProductDTO productDTO = new ProductDTO();
+        ProductDistrict productDistrict = new ProductDistrict();
         try {
             //如果productId为空, 说明是新增
             if (!StringUtils.isEmpty(form.getProductId())) {
                 productDTO = productService.findOne(form.getProductId(),sellerInfo.getSchoolNo());
+                productDistrict = productDTO.getProductDistrictList().get(0);
             } else {
                 form.setProductId(KeyUtil.genUniqueKey());
+                productDistrict.setId(KeyUtil.genUniqueKey());
             }
             BeanUtils.copyProperties(form, productDTO);
-            ProductDistrict productDistrict = new ProductDistrict();
-            productDistrict.setId(KeyUtil.genUniqueKey());
+
             BeanUtils.copyProperties(form,productDistrict);
             productDistrict.setSchoolNo(sellerInfo.getSchoolNo());
             List<ProductDistrict> productDistrictList = new ArrayList<>();
