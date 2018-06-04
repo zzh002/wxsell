@@ -14,4 +14,6 @@ public class TokenVO implements Serializable {
     private static final long serialVersionUID = 9217071427832628031L;
 
     private String token;
+
+    private String schoolNo;
 }

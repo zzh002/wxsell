@@ -89,10 +89,12 @@ public class SellerController {
      */
     @PostMapping("/register")
     public String register(@Valid SellerRegisterForm sellerRegisterForm,
-                          BindingResult bindingResult){
+                          BindingResult bindingResult,
+                           HttpServletResponse response){
 
         SellerInfo sellerInfo = new SellerInfo();
-
+        response.addHeader("Access-Control-Allow-Origin","*");
+        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
         if (bindingResult.hasErrors()) {
             throw new SellException(ResultEnum.PARAM_ERROR.getCode(),
                     bindingResult.getFieldError().getDefaultMessage());
@@ -119,10 +121,12 @@ public class SellerController {
     @PostMapping("/update")
     @ResponseBody
     public ResultVO update(@Valid SellerUpdateForm sellerUpdateForm,
-                         BindingResult bindingResult){
+                         BindingResult bindingResult,
+                           HttpServletResponse response){
 
         SellerInfo sellerInfo = new SellerInfo();
-
+        response.addHeader("Access-Control-Allow-Origin","*");
+        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
         if (bindingResult.hasErrors()) {
             throw new SellException(ResultEnum.PARAM_ERROR.getCode(),
                     bindingResult.getFieldError().getDefaultMessage());

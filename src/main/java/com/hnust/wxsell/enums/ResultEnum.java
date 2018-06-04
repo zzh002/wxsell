@@ -116,6 +116,8 @@ public enum ResultEnum {
     ADMIN_PERMISSION_ERROR(61,"管理权限错误"),
 
     SELLER_UPDATE_ERROR(62,"密码更新错误"),
+
+    TEMPLATE_EXIST(63,"存在未删除模板，不能新增模板"),
     ;
 
     private Integer code;

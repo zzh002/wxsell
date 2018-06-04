@@ -21,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,33 @@ public class TemplateServiceImpl implements TemplateService {
     public TemplateDTO save(DispatchDTO dispatchDTO) {
         String templateId = KeyUtil.genUniqueKey();
 
-        //1. 查询配送单（数量）
+
+
+        //3. 写入模板
+        TemplateMaster templateMaster = new TemplateMaster();
+        templateMaster.setTemplateId(templateId);
+        templateMaster.setTemplateName(dispatchDTO.getGroupNo());
+        templateMaster.setSchoolNo(dispatchDTO.getSchoolNo());
+        //TODO
+        TemplateMaster result = templateMasterRepository.findBySchoolNoAndTemplateName(dispatchDTO.getSchoolNo(),dispatchDTO.getGroupNo());
+        if (result != null){
+            if (result.getDeleteStatus().equals(DeleteStatusEnum.DELETED.getCode())){
+                List<TemplateDetail> details = templateDetailRepository.findByTemplateId(result.getTemplateId());
+                try {
+                    for (TemplateDetail detail : details){
+                        templateDetailRepository.delete(detail);
+                    }
+                    templateMasterRepository.delete(result);
+                } catch (SellException e){
+                    throw new SellException(ResultEnum.TEMPLATE_UPDATE_FAIL.getCode(),ResultEnum.TEMPLATE_UPDATE_FAIL.getMessage());
+                }
+            }else {
+                throw new SellException(ResultEnum.TEMPLATE_EXIST.getCode(),ResultEnum.TEMPLATE_EXIST.getMessage());
+            }
+
+        }
+        templateMasterRepository.save(templateMaster);
+        //查询配送单（数量）
         for (DispatchDetail dispatchDetail : dispatchDTO.getDispatchDetailList()) {
 
             //查找商品
@@ -67,13 +94,6 @@ public class TemplateServiceImpl implements TemplateService {
             templateDetail.setTemplateId(templateId);
             templateDetailRepository.save(templateDetail);
         }
-
-        //3. 写入模板
-        TemplateMaster templateMaster = new TemplateMaster();
-        templateMaster.setTemplateId(templateId);
-        templateMaster.setTemplateName(dispatchDTO.getGroupNo());
-        templateMaster.setSchoolNo(dispatchDTO.getSchoolNo());
-        templateMasterRepository.save(templateMaster);
 
         return TemplateMaster2TemplateDTOConverter.convert(templateMaster);
     }

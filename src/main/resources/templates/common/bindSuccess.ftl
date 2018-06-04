@@ -21,7 +21,7 @@
         </p>
     </div>
 <#--底部链接-->
-    <div class="weui-msg__extra-area">
+  <!--  <div class="weui-msg__extra-area">
         <div class="weui-footer">
             <p class="weui-footer__links">
             <div class="weui-footer__link" style="color: burlywood">逸夫楼606</div>
@@ -29,7 +29,7 @@
             <p class="weui-footer__text">Copyright © 2018 湖南科技大学逸夫楼606工作室</p>
         </div>
     </div>
-
+-->
 </div>
 
 </body>

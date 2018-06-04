@@ -10,7 +10,7 @@ spring:
     host: 127.0.0.1
     port: 6379
 server:
-    port: 9000
+    port: 8090
 
 
 
@@ -19,7 +19,7 @@ wechat:
   mpAppSecret: 735f99e57f397d14bbaeb00d898d0816
   mchId: 1502262451
   mchKey: ci5d7dk430322ddfcvpew334dferce58
-  keyPath: /developer/git-repository/inform/cert/apiclient_cert.p12
+  keyPath: D:/zzh/cert/apiclient_cert.p12
   notifyUrl: http://wxsell.nat200.top/sell/pay/notify
   templateId:
     orderStatus: yOQdE1n9KgkSIqH6di2M8np772JRrNXMyXGDRZnFFp0

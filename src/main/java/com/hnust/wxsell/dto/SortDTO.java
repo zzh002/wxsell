@@ -4,8 +4,7 @@ import lombok.Data;
 
 /**
  * 排序DTO
- * Create by HJT
- * 2018/2/21 9:30
+
  **/
 
 @Data

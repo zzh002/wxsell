@@ -29,7 +29,7 @@ public class PayServiceImplTest {
 
     @Test
     public void refund() throws Exception{
-        OrderDTO orderDTO = orderService.findOne("1525936252982266968");
+        OrderDTO orderDTO = orderService.findOne("1526203019545936914");
         payService.refund(orderDTO);
     }
 

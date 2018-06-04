@@ -184,7 +184,7 @@ public class GroupBindController {
                 ,schoolNo,rank,schoolAndrank);
 
         //TODO
-        return "redirect:" + projectUrlConfig.getSell() + "/#/register"
+        return "redirect:" + projectUrlConfig.getSell() + "/sellerInterface/#/register"
                 + "openid=" + openId
                 + "&schoolNo=" + schoolNo
                 + "&rank=" + Integer.parseInt(rank)

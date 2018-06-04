@@ -65,6 +65,7 @@ public class SellerAdministratorController {
       //  CookieUtil.set(response, CookieConstant.TOKEN, token, expire);
         TokenVO tokenVO = new TokenVO();
         tokenVO.setToken(token);
+        tokenVO.setSchoolNo(sellerInfo.getSchoolNo());
         return ResultVOUtil.success(tokenVO);
 
     }
