@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 public class ProductForm {
 
 
+    private String token;
 
     private String productId;
 

@@ -7,9 +7,11 @@ package com.hnust.wxsell.contant;
  **/
 public interface OpenidConstant {
     String[] SELLEROPENID = {
-//            "oitLB1SV9XnYsU8ICS-P_9J_ws6s",
+            "oSpuJ1uXGEZ1UhtYoqWevgs2mq2Y",
             "oSpuJ1irVGF3Ok9zOdYXXvR3Z3DU",
             "oSpuJ1rNTgE_qRFvCOXI97j-tHyU",
-//            "obyKk0xQu8ar5I6L1jy5CSK8VjCw",
+            "oSpuJ1pOjsJqUslv1LpY_a6kh2wM",
+            "oSpuJ1p9eMQl-Lu-ieFcl8tFd4_w",
+            "oSpuJ1mWoghmhjy4jJ6dmHFctkaI",
     };
 }

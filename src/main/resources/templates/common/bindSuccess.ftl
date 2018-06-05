@@ -17,7 +17,7 @@
         <p class="weui-btn-area">
             <a href="http://wxsell.nat200.top/buyerInterface/replenishment.html" class="weui-btn weui-btn_primary">零食箱补货</a>
             <a href="http://wxsell.nat200.top/buyerInterface/order.html" class="weui-btn weui-btn_default">寝室零食箱</a>
-            <a href="http://wxsell.nat200.top/buyerInterface/create.html" class="weui-btn weui-btn_default">申请零食箱</a>
+    <!--        <a href="http://wxsell.nat200.top/buyerInterface/create.html" class="weui-btn weui-btn_default">申请零食箱</a> -->
         </p>
     </div>
 <#--底部链接-->

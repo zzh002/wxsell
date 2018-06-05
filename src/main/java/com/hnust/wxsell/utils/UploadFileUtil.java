@@ -32,7 +32,7 @@ public class UploadFileUtil {
             targetFile.mkdirs();
         }
 
-        FileOutputStream out = new FileOutputStream(filePath + uploadFileName);
+        FileOutputStream out = new FileOutputStream(filePath + "/" + uploadFileName);
         out.write(file.getBytes());
         out.flush();
         out.close();

@@ -234,4 +234,10 @@ public class GroupProductServiceImpl implements GroupProductService {
         }
     }
 
+    @Override
+    public List<GroupProduct> findByProductIdAndSchoolNo(String productId ,String schoolNo) {
+
+        return groupProductRepository.findByProductIdAndSchoolNo(productId,schoolNo);
+    }
+
 }

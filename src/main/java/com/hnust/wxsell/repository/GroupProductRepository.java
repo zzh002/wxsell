@@ -16,6 +16,7 @@ public interface GroupProductRepository extends JpaRepository<GroupProduct, Stri
     GroupProduct findBySchoolNoAndGroupNoAndProductId(String schoolNo ,
                                                       String groupNo, String productId);
 
+    List<GroupProduct> findByProductIdAndSchoolNo(String productId , String schoolNo);
   //  void removeAllById(String Id);
 
 }

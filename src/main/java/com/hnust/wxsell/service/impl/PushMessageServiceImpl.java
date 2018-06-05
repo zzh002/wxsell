@@ -103,10 +103,10 @@ public class PushMessageServiceImpl implements PushMessageService {
         templateMessage.setToUser(openid);
         templateMessage.setUrl(projectUrlConfig.getSell() + "/sell/pay/view?orderId=" + orderDTO.getOrderId());
 
-        orderListAmount = orderListAmount.add(orderDTO.getOrderAmount());
+       // orderListAmount = orderListAmount.add(orderDTO.getOrderAmount());
         List<WxMpTemplateData> data = Arrays.asList(
                 new WxMpTemplateData("first",
-                        "今日第"+ String.valueOf(orderDTOList.size()+1)+ "单，"+ orderDTO.getGroupNo() + "支付成功" +
+                        "今日第"+ String.valueOf(orderDTOList.size())+ "单，"+ orderDTO.getGroupNo() + "支付成功" +
                                 "\n"+ "累计收入: ￥" + orderListAmount.toString() ,"#589E63"),
                 new WxMpTemplateData("keyword1", "自助零食箱订单","#589E63"),
                 new WxMpTemplateData("keyword2", orderDTO.getGroupNo(),"#589E63"),

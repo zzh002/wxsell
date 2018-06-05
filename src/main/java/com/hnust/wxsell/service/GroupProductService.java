@@ -38,4 +38,7 @@ public interface GroupProductService {
 
     //减销量
     void decreaseSales(List<CartDTO> cartDTOList, String groupNo ,String schoolNo);
+
+    //通过productId查询寝室商品
+    List<GroupProduct> findByProductIdAndSchoolNo(String productId, String schoolNo);
 }

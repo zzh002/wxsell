@@ -4,12 +4,14 @@ import com.hnust.wxsell.VO.ProductInfoVO;
 import com.hnust.wxsell.VO.ProductVO;
 import com.hnust.wxsell.VO.ResultVO;
 import com.hnust.wxsell.config.ProjectUrlConfig;
+import com.hnust.wxsell.dataobject.GroupProduct;
 import com.hnust.wxsell.dataobject.ProductCategory;
 import com.hnust.wxsell.dataobject.ProductDistrict;
 import com.hnust.wxsell.dataobject.SellerInfo;
 import com.hnust.wxsell.dto.ProductDTO;
 import com.hnust.wxsell.exception.SellException;
 import com.hnust.wxsell.form.ProductForm;
+import com.hnust.wxsell.service.GroupProductService;
 import com.hnust.wxsell.service.ProductCategoryService;
 import com.hnust.wxsell.service.ProductService;
 import com.hnust.wxsell.service.UserTokenService;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +50,9 @@ public class SellerProductController {
 
     @Autowired
     private ProjectUrlConfig projectUrlConfig;
+
+    @Autowired
+    private GroupProductService groupProductService;
 
     /**
      * 商品列表
@@ -161,13 +167,12 @@ public class SellerProductController {
     @PostMapping("/save")
     public ResultVO save(@RequestParam(value = "file", required = false) MultipartFile file,
                          @Valid ProductForm form,
-                         @RequestParam("token") String token,
                          BindingResult bindingResult,
                          HttpServletRequest request,
                          HttpServletResponse response) {
         response.addHeader("Access-Control-Allow-Origin","*");
         response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
-        SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
+        SellerInfo sellerInfo = userTokenService.getSellerInfo(form.getToken());
         if (bindingResult.hasErrors()) {
             return ResultVOUtil.error(1003,"参数缺失");
         }
@@ -202,6 +207,15 @@ public class SellerProductController {
             productDistrictList.add(productDistrict);
             productDTO.setProductDistrictList(productDistrictList);
             productService.save(productDTO);
+            List<GroupProduct> groupProductList = groupProductService.
+                    findByProductIdAndSchoolNo(form.getProductId(),sellerInfo.getSchoolNo());
+            for (GroupProduct groupProduct : groupProductList){
+                Integer stock = groupProduct.getProductStock();
+                BeanUtils.copyProperties(form,groupProduct);
+                groupProduct.setProductStock(stock);
+                groupProductService.save(groupProduct);
+            }
+
         } catch (SellException e) {
             return ResultVOUtil.error(e.getCode(),e.getMessage());
         }
