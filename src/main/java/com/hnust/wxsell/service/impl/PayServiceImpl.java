@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ import java.util.Map;
 @Service
 @Slf4j
 public class PayServiceImpl implements PayService {
-    private static final String ORDER_NAME = "吃呗订单";
+    private static final String ORDER_NAME = "自助零食箱订单";
 
     private static final int TIMEOUT = 10 * 1000;    //超时时间十秒
 
@@ -53,7 +54,9 @@ public class PayServiceImpl implements PayService {
     public PayResponse create(OrderDTO orderDTO) {
         PayRequest payRequest = new PayRequest();
         payRequest.setOpenid(orderDTO.getUserOpenid());
-        payRequest.setOrderAmount(orderDTO.getOrderAmount().doubleValue());
+       // BigDecimal o = new BigDecimal("0.00");
+      //  orderDTO.setOrderAmount(orderDTO.getOrderAmount().add(o));
+        payRequest.setOrderAmount(orderDTO.getOrderAmount().setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         payRequest.setOrderId(orderDTO.getOrderId());
         payRequest.setOrderName(ORDER_NAME);
         payRequest.setPayTypeEnum(BestPayTypeEnum.WXPAY_H5);
@@ -107,7 +110,7 @@ public class PayServiceImpl implements PayService {
     @Override
     public boolean query(String notifyData) {
         //xml解析为对象
-        WxPayAsyncResponse asyncResponse = (WxPayAsyncResponse) XmlUtil.fromXML(notifyData, WxPayAsyncResponse.class);
+        WxPayAsyncResponse asyncResponse = (WxPayAsyncResponse) XmlUtil.toMap(notifyData);
         PayResponse payResponse = buildPayResponse(asyncResponse);
 
         //加锁

@@ -31,4 +31,4 @@ wechat:
 projectUrl:
   wechatMpAuthorize: http://wxsell.nat200.top
   wechatOpenAuthorize: http://wxsell.nat200.top
-  sell: http://localhost:9000
+  sell: http://wxsell.nat200.top

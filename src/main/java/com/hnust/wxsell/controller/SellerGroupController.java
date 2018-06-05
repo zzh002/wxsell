@@ -68,7 +68,7 @@ public class SellerGroupController {
      */
     @GetMapping("/list")
     public ResultVO list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                         @RequestParam(value = "size", defaultValue = "10") Integer size,
+                         @RequestParam(value = "size", defaultValue = "100") Integer size,
                          @RequestParam(value = "groupDistrict", defaultValue = "1") String groupDistrict,
                          @RequestParam("token") String token){
 
