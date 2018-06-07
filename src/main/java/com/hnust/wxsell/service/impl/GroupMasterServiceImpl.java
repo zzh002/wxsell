@@ -109,4 +109,9 @@ public class GroupMasterServiceImpl implements GroupMasterService {
 
         groupMasterRepository.save(groupMaster);
     }
+
+    @Override
+    public GroupMaster findBySchoolAndGroupNo(String schoolNo, String groupNo) {
+        return groupMasterRepository.findByGroupNoAndSchoolNo(groupNo,schoolNo);
+    }
 }
