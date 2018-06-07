@@ -4,18 +4,13 @@ import com.hnust.wxsell.VO.ProductInfoVO;
 import com.hnust.wxsell.VO.ProductVO;
 import com.hnust.wxsell.VO.ResultVO;
 import com.hnust.wxsell.config.ProjectUrlConfig;
-import com.hnust.wxsell.dataobject.GroupProduct;
-import com.hnust.wxsell.dataobject.ProductCategory;
-import com.hnust.wxsell.dataobject.ProductDistrict;
-import com.hnust.wxsell.dataobject.SellerInfo;
+import com.hnust.wxsell.dataobject.*;
 import com.hnust.wxsell.dto.ProductDTO;
 import com.hnust.wxsell.exception.SellException;
 import com.hnust.wxsell.form.ProductForm;
-import com.hnust.wxsell.service.GroupProductService;
-import com.hnust.wxsell.service.ProductCategoryService;
-import com.hnust.wxsell.service.ProductService;
-import com.hnust.wxsell.service.UserTokenService;
+import com.hnust.wxsell.service.*;
 import com.hnust.wxsell.utils.KeyUtil;
+import com.hnust.wxsell.utils.MathUtil;
 import com.hnust.wxsell.utils.ResultVOUtil;
 import com.hnust.wxsell.utils.UploadFileUtil;
 import org.springframework.beans.BeanUtils;
@@ -53,6 +48,9 @@ public class SellerProductController {
 
     @Autowired
     private GroupProductService groupProductService;
+
+    @Autowired
+    private GroupMasterService groupMasterService;
 
     /**
      * 商品列表
@@ -210,11 +208,22 @@ public class SellerProductController {
             List<GroupProduct> groupProductList = groupProductService.
                     findByProductIdAndSchoolNo(form.getProductId(),sellerInfo.getSchoolNo());
             for (GroupProduct groupProduct : groupProductList){
+                if (!MathUtil.equals(groupProduct.getProductPrice().doubleValue(), form.getProductPrice().doubleValue())){
+                    GroupMaster groupMaster = groupMasterService.findBySchoolAndGroupNo
+                            (groupProduct.getSchoolNo(),groupProduct.getGroupNo());
+                    BigDecimal amount = form.getProductPrice().subtract(groupProduct.getProductPrice());
+                    BigDecimal quantity = new BigDecimal(groupProduct.getProductStock().toString());
+                    amount = amount.multiply(quantity);
+                    groupMaster.setGroupAmount(groupMaster.getGroupAmount().add(amount));
+                    groupMasterService.save(groupMaster);
+                }
                 Integer stock = groupProduct.getProductStock();
                 BeanUtils.copyProperties(form,groupProduct);
                 groupProduct.setProductStock(stock);
                 groupProductService.save(groupProduct);
+
             }
+
 
         } catch (SellException e) {
             return ResultVOUtil.error(e.getCode(),e.getMessage());

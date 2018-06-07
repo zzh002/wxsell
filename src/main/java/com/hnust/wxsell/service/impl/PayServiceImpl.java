@@ -54,9 +54,7 @@ public class PayServiceImpl implements PayService {
     public PayResponse create(OrderDTO orderDTO) {
         PayRequest payRequest = new PayRequest();
         payRequest.setOpenid(orderDTO.getUserOpenid());
-       // BigDecimal o = new BigDecimal("0.00");
-      //  orderDTO.setOrderAmount(orderDTO.getOrderAmount().add(o));
-        payRequest.setOrderAmount(orderDTO.getOrderAmount().setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        payRequest.setOrderAmount(orderDTO.getOrderAmount().doubleValue());
         payRequest.setOrderId(orderDTO.getOrderId());
         payRequest.setOrderName(ORDER_NAME);
         payRequest.setPayTypeEnum(BestPayTypeEnum.WXPAY_H5);
@@ -114,10 +112,10 @@ public class PayServiceImpl implements PayService {
         PayResponse payResponse = buildPayResponse(asyncResponse);
 
         //加锁
-/*        long time = System.currentTimeMillis() + TIMEOUT;
+       long time = System.currentTimeMillis() + TIMEOUT;
         if(!redisLock.lock(payResponse.getOrderId(),String.valueOf(time))){
             throw new SellException(ResultEnum.DECREASE_STOCK_ERROR);
-        }*/
+        }
 
         Map<String, String> resp = new HashMap<String, String>();
         try {
@@ -141,13 +139,13 @@ public class PayServiceImpl implements PayService {
             changePayStatus(payResponse);
 
             //解锁
-//            redisLock.unlock(payResponse.getOrderId(), String.valueOf(time));
+            redisLock.unlock(payResponse.getOrderId(), String.valueOf(time));
 
             return true;
         }
 
         //解锁
-//        redisLock.unlock(payResponse.getOrderId(), String.valueOf(time));
+        redisLock.unlock(payResponse.getOrderId(), String.valueOf(time));
 
         return false;
     }
@@ -229,9 +227,9 @@ public class PayServiceImpl implements PayService {
         }
 
         // TODO 修改订单的支付状态
-//        if (orderDTO.getPayStatus().equals(PayStatusEnum.WAIT.getCode())){
+       if (orderDTO.getPayStatus().equals(PayStatusEnum.WAIT.getCode())){
         orderService.paid(orderDTO);
-//        }
+       }
 
         log.info("【修改订单支付状态】 修改成功，orderDTO={}", orderDTO);
 

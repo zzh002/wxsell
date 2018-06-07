@@ -11,7 +11,7 @@ import org.springframework.data.domain.Sort;
 public class SortUtil {
 
     public static Sort basicSort() {
-        return basicSort("desc", "updateTime");
+        return basicSort("desc", "createTime");
     }
 
     public static Sort basicSort(String orderType, String orderField) {

@@ -93,7 +93,7 @@ public enum ResultEnum {
 
     TEMPLATE_NOT_EXIST(50,"模板不存在"),
 
-    TEMPLATE_UPDATE_FAIL(51,"模板更新失败"),
+    TEMPLATE_UPDATE_FAIL(51,"模板创建失败"),
 
     WECHAT_ORDER_QUERY_ERROR(52,"微信查询订单支付状态错误"),
 
@@ -117,7 +117,7 @@ public enum ResultEnum {
 
     SELLER_UPDATE_ERROR(62,"密码更新错误"),
 
-    TEMPLATE_EXIST(63,"存在未删除模板，不能新增模板"),
+    TEMPLATE_EXIST(63,"该模板名已存在，不能新增模板"),
     ;
 
     private Integer code;

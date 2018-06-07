@@ -16,6 +16,7 @@ import com.hnust.wxsell.form.ReplenishFrom;
 import com.hnust.wxsell.service.*;
 import com.hnust.wxsell.utils.KeyUtil;
 import com.hnust.wxsell.utils.ResultVOUtil;
+import com.hnust.wxsell.utils.SortUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class SellerReplenishController {
         SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
         PageListVO pageListVO = new PageListVO();
 
-        PageRequest request = new PageRequest(page - 1, size);
+        PageRequest request = new PageRequest(page - 1, size, SortUtil.basicSort());
         Page<ReplenishDTO> replenishDTOPage = replenishService.
                 findListBySchoolNo(sellerInfo.getSchoolNo(),request);
 

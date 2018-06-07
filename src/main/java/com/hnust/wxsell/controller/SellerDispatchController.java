@@ -13,6 +13,7 @@ import com.hnust.wxsell.service.DispatchService;
 import com.hnust.wxsell.service.TemplateService;
 import com.hnust.wxsell.service.UserTokenService;
 import com.hnust.wxsell.utils.ResultVOUtil;
+import com.hnust.wxsell.utils.SortUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -55,7 +56,7 @@ public class SellerDispatchController {
         SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
         PageListVO pageListVO = new PageListVO();
 
-        PageRequest request = new PageRequest(page - 1, size);
+        PageRequest request = new PageRequest(page - 1, size, SortUtil.basicSort());
         Page<DispatchDTO> dispatchDTOPage = dispatchService.
                 findList(sellerInfo.getSchoolNo(),request);
 
@@ -121,12 +122,13 @@ public class SellerDispatchController {
      */
     @GetMapping("/create_template")
     public ResultVO create_template(@RequestParam("groupNo") String groupNo,
-                                    @RequestParam("token") String token){
+                                    @RequestParam("token") String token,
+                                    @RequestParam("templateName") String templateName){
 
         SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
         try {
             DispatchDTO dispatchDTO = dispatchService.findOne(sellerInfo.getSchoolNo(),groupNo);
-            templateService.save(dispatchDTO);
+            templateService.save(dispatchDTO,templateName);
         }catch (SellException e) {
             log.error("【卖家端完结补货】发生异常{}", e);
             return ResultVOUtil.error(e.getCode(),e.getMessage());

@@ -42,5 +42,7 @@ public interface GroupMasterService {
     /** 订单退款，减少寝室消费金额 */
     void consumeRefund(OrderDTO orderDTO);
 
+    GroupMaster findBySchoolAndGroupNo(String schoolNo , String groupNo);
+
 
 }
