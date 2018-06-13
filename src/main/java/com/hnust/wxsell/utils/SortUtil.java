@@ -5,13 +5,12 @@ import org.springframework.data.domain.Sort;
 
 /**
  * 排序工具类
- * Create by HJT
  * 2018/2/21 9:33
  **/
 public class SortUtil {
 
     public static Sort basicSort() {
-        return basicSort("desc", "createTime");
+        return basicSort("desc", "updateTime");
     }
 
     public static Sort basicSort(String orderType, String orderField) {
