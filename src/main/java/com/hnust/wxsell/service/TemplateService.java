@@ -1,5 +1,6 @@
 package com.hnust.wxsell.service;
 
+import com.hnust.wxsell.dataobject.TemplateDetail;
 import com.hnust.wxsell.dataobject.TemplateMaster;
 import com.hnust.wxsell.dto.DispatchDTO;
 import com.hnust.wxsell.dto.ReplenishDTO;
@@ -31,4 +32,7 @@ public interface TemplateService {
 
     /** 更新模板名*/
     TemplateMaster update(TemplateMaster templateMaster);
+
+    /** 保存模板详情信息*/
+    TemplateDetail save(TemplateDetail templateDetail);
 }

@@ -46,7 +46,7 @@ public class GroupMasterServiceImpl implements GroupMasterService {
 
     @Override
     public List<GroupMaster> findByGroupNo(String schoolNo, String groupNo) {
-        return groupMasterRepository.findBySchoolNoAndGroupNoContaining(schoolNo,groupNo);
+        return groupMasterRepository.findBySchoolNoAndGroupNoStartingWith(schoolNo,groupNo);
     }
 
     @Override
@@ -113,5 +113,10 @@ public class GroupMasterServiceImpl implements GroupMasterService {
     @Override
     public GroupMaster findBySchoolAndGroupNo(String schoolNo, String groupNo) {
         return groupMasterRepository.findByGroupNoAndSchoolNo(groupNo,schoolNo);
+    }
+
+    @Override
+    public void delete(GroupMaster groupMaster) {
+        groupMasterRepository.delete(groupMaster);
     }
 }

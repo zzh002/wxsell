@@ -264,11 +264,11 @@ public class OrderServiceImpl implements OrderService {
         groupProductService.decreaseStock(cartDTOList,orderDTO.getGroupNo(),orderDTO.getSchoolNo());
         groupProductService.increaseSales(cartDTOList,orderDTO.getGroupNo(),orderDTO.getSchoolNo());
         //给卖家推送模板消息
-        for (String openid: OpenidConstant.SELLEROPENID){
+      /*  for (String openid: OpenidConstant.SELLEROPENID){
             pushMessageService.paid(orderDTO, openid);
-        }
+        }*/
 
-        //TODO 给用户推送模板消息
+        //给用户推送模板消息
         pushMessageService.orderStatus(orderDTO);
 
         return orderDTO;
@@ -292,7 +292,7 @@ public class OrderServiceImpl implements OrderService {
 
                 if (StringUtils.isNoneBlank(orderListForm.getGroupNo())){
                     predicateList.add(cb.like(root.get("groupNo").as(String.class),
-                            "%"+ orderListForm.getGroupNo() + "%"));
+                            orderListForm.getGroupNo() + "%"));
                 }
 
                 if (StringUtils.isNoneBlank(orderListForm.getSchoolNo())){
@@ -360,6 +360,11 @@ public class OrderServiceImpl implements OrderService {
                 if (orderListForm.getPayStatus() != null){
                     predicateList.add(cb.equal(root.get("payStatus").as(Integer.class),
                             orderListForm.getPayStatus()));
+                }
+
+                if (StringUtils.isNoneBlank(orderListForm.getGroupNo())){
+                    predicateList.add(cb.like(root.get("groupNo").as(String.class),
+                            orderListForm.getGroupNo() + "%"));
                 }
 
                 if (StringUtils.isNoneBlank(orderListForm.getSchoolNo())){

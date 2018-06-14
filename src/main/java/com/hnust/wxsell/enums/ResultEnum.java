@@ -118,6 +118,8 @@ public enum ResultEnum {
     SELLER_UPDATE_ERROR(62,"密码更新错误"),
 
     TEMPLATE_EXIST(63,"该模板名已存在，不能新增模板"),
+
+    GROUP_DELETE_FAIL(64,"寝室删除失败"),
     ;
 
     private Integer code;

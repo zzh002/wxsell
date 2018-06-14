@@ -21,5 +21,5 @@ public interface GroupMasterRepository extends JpaRepository<GroupMaster , Strin
 
     Page<GroupMaster> findBySchoolNo(String schoolNo, Pageable pageable);
 
-    List<GroupMaster> findBySchoolNoAndGroupNoContaining(String schoolNo , String groupNo);
+    List<GroupMaster> findBySchoolNoAndGroupNoStartingWith(String schoolNo , String groupNo);
 }

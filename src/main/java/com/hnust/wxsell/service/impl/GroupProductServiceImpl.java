@@ -240,4 +240,9 @@ public class GroupProductServiceImpl implements GroupProductService {
         return groupProductRepository.findByProductIdAndSchoolNo(productId,schoolNo);
     }
 
+    @Override
+    public void delete(List<GroupProduct> groupProductList) {
+        groupProductRepository.delete(groupProductList);
+    }
+
 }

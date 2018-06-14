@@ -41,4 +41,7 @@ public interface GroupProductService {
 
     //通过productId查询寝室商品
     List<GroupProduct> findByProductIdAndSchoolNo(String productId, String schoolNo);
+
+    //删除寝室商品
+    void delete(List<GroupProduct> groupProductList);
 }

@@ -193,4 +193,9 @@ public class TemplateServiceImpl implements TemplateService {
     public TemplateMaster update(TemplateMaster templateMaster) {
         return templateMasterRepository.save(templateMaster);
     }
+
+    @Override
+    public TemplateDetail save(TemplateDetail templateDetail) {
+        return templateDetailRepository.save(templateDetail);
+    }
 }

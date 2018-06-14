@@ -92,6 +92,7 @@ public class SellerOrderController {
             orderVO.setCurrentPage(page);
             orderVO.setOrderDTOVOList(orderDTOVOList);
             orderVO.setOrderListSize(orderListSize);
+            orderVO.setOrderListAmount(orderListAmount);
         }catch (SellException e){
             return ResultVOUtil.error(e.getCode(),e.getMessage());
         }
@@ -155,16 +156,16 @@ public class SellerOrderController {
      * @return
      */
     @GetMapping("/timeBetween")
-    public ResultVO timeBetween(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                @RequestParam(value = "size", defaultValue = "10") Integer size,
-            @Valid OrderListForm orderListForm) {
+    public ResultVO timeBetween(@Valid OrderListForm orderListForm) {
 
         BigDecimal orderListAmount = new BigDecimal(BigInteger.ZERO);
         SellerInfo sellerInfo = userTokenService.getSellerInfo(orderListForm.getToken());
         orderListForm.setSchoolNo(sellerInfo.getSchoolNo());
         //设置按查询时间内所有支付的订单
             orderListForm.setPayStatus(PayStatusEnum.SUCCESS.getCode());
+
         List<OrderDTO> orderDTOList = orderService.findByTimeBetween(orderListForm);
+
         /**计算所有订单总价 */
         for (OrderDTO orderDTO: orderDTOList){
             orderListAmount = orderDTO.getOrderAmount().add(orderListAmount);
@@ -173,10 +174,10 @@ public class SellerOrderController {
         Integer orderListSize = orderDTOList.size();
         OrderVO orderVO = new OrderVO();
         orderVO.setOrderListAmount(orderListAmount);
-        orderVO.setOrderListSize(orderListSize);
-        orderVO.setCurrentPage(page);
-        orderVO.setSize(size);
-        List<OrderDTOVO> orderDTOVOList = new ArrayList<>();
+        //orderVO.setOrderListSize(orderListSize);
+        //orderVO.setCurrentPage(page);
+        //orderVO.setSize(size);
+       /* List<OrderDTOVO> orderDTOVOList = new ArrayList<>();
         for (OrderDTO orderDTO : orderDTOList){
             OrderDTOVO orderDTOVO = new OrderDTOVO();
             BeanUtils.copyProperties(orderDTO,orderDTOVO);
@@ -189,7 +190,7 @@ public class SellerOrderController {
             orderDTOVO.setOrderDetailVOList(orderDetailVOList);
             orderDTOVOList.add(orderDTOVO);
         }
-        orderVO.setOrderDTOVOList(orderDTOVOList);
+        orderVO.setOrderDTOVOList(orderDTOVOList);*/
 
         return ResultVOUtil.success(orderVO);
     }

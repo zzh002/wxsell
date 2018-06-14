@@ -16,6 +16,7 @@ import com.hnust.wxsell.form.GroupMasterForm;
 import com.hnust.wxsell.form.StockOutForm;
 import com.hnust.wxsell.service.*;
 import com.hnust.wxsell.utils.KeyUtil;
+import com.hnust.wxsell.utils.MathUtil;
 import com.hnust.wxsell.utils.ResultVOUtil;
 import com.hnust.wxsell.utils.SortUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -368,6 +369,42 @@ public class SellerGroupController {
 
 
         return ResultVOUtil.success();
+    }
+
+    /**
+     * 删除寝室
+     * @param token
+     * @param groupNo
+     * @return
+     */
+    @GetMapping("/delete")
+    public ResultVO delete(@RequestParam("token") String token,
+                           @RequestParam("groupNo") String groupNo){
+        // token身份确认
+        SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
+        GroupMasterDTO groupMasterDTO = new GroupMasterDTO();
+        try {
+            groupMasterDTO = groupMasterService.findByGroupNoAndSchoolNo
+                    (groupNo,sellerInfo.getSchoolNo());
+            if (groupMasterDTO==null){
+                return ResultVOUtil.error(ResultEnum.GROUP_NOT_EXIST.getCode(),
+                        ResultEnum.GROUP_NOT_EXIST.getMessage());
+            }
+            if (MathUtil.equals(groupMasterDTO.getGroupAmount().doubleValue(),0.0)||
+                    groupMasterDTO.getGroupProductList().size()<=0){
+                groupProductService.delete(groupMasterDTO.getGroupProductList());
+                GroupMaster groupMaster = new GroupMaster();
+                BeanUtils.copyProperties(groupMasterDTO,groupMaster);
+                groupMasterService.delete(groupMaster);
+                return ResultVOUtil.success();
+            }
+
+        }catch (SellException e){
+            log.error("【寝室商品详情查询】 发生异常{}",e);
+            return ResultVOUtil.error(e.getCode(),e.getMessage());
+        }
+        return ResultVOUtil.error(ResultEnum.GROUP_DELETE_FAIL.getCode(),
+                ResultEnum.GROUP_DELETE_FAIL.getMessage());
     }
 
 }

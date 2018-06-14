@@ -44,5 +44,8 @@ public interface GroupMasterService {
 
     GroupMaster findBySchoolAndGroupNo(String schoolNo , String groupNo);
 
+    //删除寝室
+    void delete(GroupMaster groupMaster);
+
 
 }

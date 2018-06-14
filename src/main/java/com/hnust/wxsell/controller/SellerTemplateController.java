@@ -2,22 +2,31 @@ package com.hnust.wxsell.controller;
 
 import com.hnust.wxsell.VO.ResultVO;
 import com.hnust.wxsell.config.ProjectUrlConfig;
+import com.hnust.wxsell.converter.TemplateForm2TemplateDTOConverter;
+import com.hnust.wxsell.dataobject.ProductMaster;
 import com.hnust.wxsell.dataobject.SellerInfo;
+import com.hnust.wxsell.dataobject.TemplateDetail;
 import com.hnust.wxsell.dataobject.TemplateMaster;
+import com.hnust.wxsell.dto.ProductDTO;
 import com.hnust.wxsell.dto.TemplateDTO;
 import com.hnust.wxsell.enums.ResultEnum;
 import com.hnust.wxsell.exception.SellException;
+
+import com.hnust.wxsell.form.TemplateForm;
+
+import com.hnust.wxsell.service.ProductService;
 import com.hnust.wxsell.service.TemplateService;
 import com.hnust.wxsell.service.UserTokenService;
+import com.hnust.wxsell.utils.KeyUtil;
 import com.hnust.wxsell.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -33,7 +42,8 @@ public class SellerTemplateController {
     @Autowired
     private UserTokenService userTokenService;
     @Autowired
-    private ProjectUrlConfig projectUrlConfig;
+    private ProductService productService;
+
 
     /**
      * 模板列表
@@ -139,6 +149,51 @@ public class SellerTemplateController {
         }catch (SellException e){
             log.error("【卖家端查询订单详情】发生异常{}", e);
             return ResultVOUtil.error(e.getCode(),e.getMessage());
+        }
+        return ResultVOUtil.success();
+    }
+
+    /**
+     * 直接创建模板
+     * @param templateForm
+     * @param token
+     * @param bindingResult
+     * @param response
+     * @return
+     */
+    @PostMapping("/create")
+    public ResultVO create(@Valid TemplateForm templateForm,
+                           @RequestParam("token") String token,
+                           BindingResult bindingResult,
+                           HttpServletResponse response){
+        response.addHeader("Access-Control-Allow-Origin","*");
+        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+        if (bindingResult.hasErrors()) {
+            log.error("【创建订单】参数不正确, orderForm={}", templateForm);
+            return ResultVOUtil.error(ResultEnum.PARAM_ERROR.getCode(),
+                    bindingResult.getFieldError().getDefaultMessage());
+        }
+        // 1.验证token
+        SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
+        // 2.解析Json数据
+        TemplateDTO templateDTO = TemplateForm2TemplateDTOConverter.convert(templateForm);
+        //3.保存模板信息
+        TemplateMaster templateMaster = new TemplateMaster();
+        templateMaster.setTemplateId(KeyUtil.genUniqueKey());
+        templateMaster.setSchoolNo(sellerInfo.getSchoolNo());
+        templateMaster.setTemplateName(templateForm.getTemplateName());
+        templateService.update(templateMaster);
+        List<TemplateDetail> templateDetailList = templateDTO.getTemplateDetailList();
+        for (TemplateDetail templateDetail : templateDetailList){
+            ProductDTO productDTO = productService.findOne(templateDetail.getProductId());
+            if (productDTO==null){
+                return ResultVOUtil.error(ResultEnum.PRODUCT_NOT_EXIST.getCode(),
+                        ResultEnum.PRODUCT_NOT_EXIST.getMessage());
+            }
+            templateDetail.setDetailId(KeyUtil.genUniqueKey());
+            templateDetail.setTemplateId(templateMaster.getTemplateId());
+            templateDetail.setProductName(productDTO.getProductName());
+            templateService.save(templateDetail);
         }
         return ResultVOUtil.success();
     }

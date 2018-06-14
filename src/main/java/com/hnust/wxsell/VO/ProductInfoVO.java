@@ -29,13 +29,13 @@ public class ProductInfoVO implements Serializable {
     private Integer productStatus;
 
     @JsonProperty("stock")
-    private Integer productStock;
+    private Integer productStock=0;
 
     @JsonProperty("stockout")
-    private Integer productStockout;
+    private Integer productStockout=0;
 
     @JsonProperty("sales")
-    private Integer productSales;
+    private Integer productSales=0;
 
     @JsonProperty("quantity")
     private Integer productQuantity;
