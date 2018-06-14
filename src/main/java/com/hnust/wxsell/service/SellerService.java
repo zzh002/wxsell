@@ -4,6 +4,8 @@ import com.hnust.wxsell.dataobject.SellerInfo;
 import com.hnust.wxsell.form.SellerLoginForm;
 import com.hnust.wxsell.form.SellerRegisterForm;
 
+import java.util.List;
+
 /**
  * @author ZZH
  * @date 2018/4/10 0010 19:35
@@ -21,4 +23,10 @@ public interface SellerService {
     SellerInfo save(SellerRegisterForm sellerRegisterForm);
 
     SellerInfo update(SellerInfo sellerInfo);
+
+    List<SellerInfo> findBySchoolNo(String schoolNo);
+
+    SellerInfo findOne(String sellerId);
+
+    void delete(String sellerId);
 }

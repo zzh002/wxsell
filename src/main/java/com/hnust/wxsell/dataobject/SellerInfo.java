@@ -1,6 +1,6 @@
 package com.hnust.wxsell.dataobject;
 
-import com.hnust.wxsell.enums.SellerRank;
+import com.hnust.wxsell.enums.SellerRankEnum;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -24,5 +24,5 @@ public class SellerInfo {
 
     private String schoolNo;
 
-    private Integer rank= SellerRank.DISTRIBUTOR.getCode();
+    private Integer rank= SellerRankEnum.DISTRIBUTOR.getCode();
 }

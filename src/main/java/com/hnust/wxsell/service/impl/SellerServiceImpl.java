@@ -13,6 +13,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author ZZH
  * @date 2018/4/10 0010 19:37
@@ -57,5 +59,20 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public SellerInfo update(SellerInfo sellerInfo) {
         return repository.save(sellerInfo);
+    }
+
+    @Override
+    public List<SellerInfo> findBySchoolNo(String schoolNo) {
+        return repository.findBySchoolNo(schoolNo);
+    }
+
+    @Override
+    public SellerInfo findOne(String sellerId) {
+        return repository.findOne(sellerId);
+    }
+
+    @Override
+    public void delete(String sellerId) {
+        repository.delete(sellerId);
     }
 }

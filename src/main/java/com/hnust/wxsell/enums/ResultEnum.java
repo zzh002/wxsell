@@ -120,6 +120,8 @@ public enum ResultEnum {
     TEMPLATE_EXIST(63,"该模板名已存在，不能新增模板"),
 
     GROUP_DELETE_FAIL(64,"寝室删除失败"),
+
+    SELLER_RANK_ERROR(65,"卖家权限错误"),
     ;
 
     private Integer code;

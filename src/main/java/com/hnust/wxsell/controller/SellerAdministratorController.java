@@ -2,26 +2,23 @@ package com.hnust.wxsell.controller;
 
 import com.hnust.wxsell.VO.ResultVO;
 import com.hnust.wxsell.VO.TokenVO;
-import com.hnust.wxsell.config.ProjectUrlConfig;
-import com.hnust.wxsell.contant.CookieConstant;
+
 import com.hnust.wxsell.contant.RedisConstant;
 import com.hnust.wxsell.dataobject.SellerInfo;
 import com.hnust.wxsell.enums.ResultEnum;
-import com.hnust.wxsell.exception.SellException;
+import com.hnust.wxsell.enums.SellerRankEnum;
 import com.hnust.wxsell.service.SellerService;
-import com.hnust.wxsell.utils.CookieUtil;
+import com.hnust.wxsell.service.UserTokenService;
 import com.hnust.wxsell.utils.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +37,7 @@ public class SellerAdministratorController {
     private StringRedisTemplate redisTemplate;
 
     @Autowired
-    private ProjectUrlConfig projectUrlConfig;
+    private UserTokenService userTokenService;
 
     @GetMapping("/admin")
     public ResultVO admin(@RequestParam("openid") String openid,
@@ -87,5 +84,75 @@ public class SellerAdministratorController {
        //         ResultEnum.SELLER_LOGOUT_FAIL.getMessage());
 
     }
+
+    /**
+     * 卖家列表
+     * @param token
+     * @return
+     */
+    @GetMapping("/list")
+    public ResultVO list(@RequestParam("token") String token){
+        SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
+        if (sellerInfo == null){
+            return ResultVOUtil.error(ResultEnum.TOKEN_ERROR.getCode(),
+                    ResultEnum.TOKEN_ERROR.getMessage());
+        }
+        if (sellerInfo.getRank().equals(SellerRankEnum.DISTRIBUTOR)){
+            return ResultVOUtil.error(ResultEnum.SELLER_RANK_ERROR.getCode(),
+                    ResultEnum.SELLER_RANK_ERROR.getMessage());
+        }
+        List<SellerInfo> sellerInfoList = sellerService.findBySchoolNo(sellerInfo.getSchoolNo());
+        return ResultVOUtil.success(sellerInfoList);
+    }
+
+    /**
+     * 卖家详情
+     * @param token
+     * @param sellerId
+     * @return
+     */
+    @GetMapping("/detail")
+    public ResultVO detail(@RequestParam("token") String token,
+                           @RequestParam("sellerId") String sellerId){
+        SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
+        if (sellerInfo == null){
+            return ResultVOUtil.error(ResultEnum.TOKEN_ERROR.getCode(),
+                    ResultEnum.TOKEN_ERROR.getMessage());
+        }
+        if (sellerInfo.getRank().equals(SellerRankEnum.DISTRIBUTOR)){
+            return ResultVOUtil.error(ResultEnum.SELLER_RANK_ERROR.getCode(),
+                    ResultEnum.SELLER_RANK_ERROR.getMessage());
+        }
+        SellerInfo s = sellerService.findOne(sellerId);
+        return ResultVOUtil.success(s);
+    }
+
+    /**
+     * 删除卖家
+     * @param token
+     * @param sellerId
+     * @return
+     */
+    @GetMapping("/delete")
+    public ResultVO delete(@RequestParam("token") String token,
+                           @RequestParam("sellerId") String sellerId){
+        SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
+        if (sellerInfo == null){
+            return ResultVOUtil.error(ResultEnum.TOKEN_ERROR.getCode(),
+                    ResultEnum.TOKEN_ERROR.getMessage());
+        }
+        if (sellerInfo.getRank().equals(SellerRankEnum.DISTRIBUTOR)){
+            return ResultVOUtil.error(ResultEnum.SELLER_RANK_ERROR.getCode(),
+                    ResultEnum.SELLER_RANK_ERROR.getMessage());
+        }
+        SellerInfo s = sellerService.findOne(sellerId);
+        if (s == null || !s.getSchoolNo().equals(sellerInfo.getSchoolNo())){
+            return ResultVOUtil.error(ResultEnum.SELLER_NOT_EXIST.getCode(),
+                    ResultEnum.SELLER_NOT_EXIST.getMessage());
+        }
+       sellerService.delete(sellerId);
+        return ResultVOUtil.success();
+    }
+
 }
 

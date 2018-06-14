@@ -7,7 +7,7 @@ import lombok.Getter;
  * @date 2018/4/10 0010 19:22
  **/
 @Getter
-public enum SellerRank implements CodeEnum {
+public enum SellerRankEnum implements CodeEnum {
     DISTRIBUTOR(0,"配送员"),
     ADMIN(1,"管理员"),
     ;
@@ -15,7 +15,7 @@ public enum SellerRank implements CodeEnum {
     private Integer code;
 
     private String message;
-    SellerRank(Integer code, String message) {
+    SellerRankEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

@@ -4,7 +4,9 @@ import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.google.gson.JsonObject;
 import com.hnust.wxsell.VO.ResultVO;
+import com.hnust.wxsell.VO.SellerRankVo;
 import com.hnust.wxsell.contant.RedisConstant;
+import com.hnust.wxsell.dataobject.SellerInfo;
 import com.hnust.wxsell.dataobject.UserMaster;
 import com.hnust.wxsell.enums.ResultEnum;
 import com.hnust.wxsell.exception.SellException;
@@ -114,6 +116,24 @@ public class UserTokenController {
         userTokenService.getTokenValue(token);
 
         return ResultVOUtil.success();
+    }
+
+    /**
+     * 验证卖家等级
+     * @param token
+     * @return
+     */
+    @GetMapping("/sellerRank")
+    public ResultVO sellerRank(@RequestParam("token") String token){
+        SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
+        if (sellerInfo == null){
+            return ResultVOUtil.error(ResultEnum.TOKEN_ERROR.getCode(),
+                    ResultEnum.TOKEN_ERROR.getMessage());
+        }
+        SellerRankVo sellerRankVo = new SellerRankVo();
+        sellerRankVo.setRank(sellerInfo.getRank());
+        sellerRankVo.setSchoolNo(sellerInfo.getSchoolNo());
+        return ResultVOUtil.success(sellerRankVo);
     }
 
 }
