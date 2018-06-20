@@ -19,9 +19,9 @@ public class SellerRegisterForm {
     private String openid;
 
     @NotEmpty(message = "卖家级别不能为空")
-    private Integer rank;
+    private String rank;
 
-    @NotEmpty(message = "学校编号")
+    @NotEmpty(message = "学校编号不能为空")
     private String schoolNo;
 
     @NotEmpty(message = "姓名不能为空")

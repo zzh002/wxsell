@@ -53,6 +53,7 @@ public class SellerServiceImpl implements SellerService {
             sellerInfo.setSellerId(KeyUtil.genUniqueKey());
         }
         BeanUtils.copyProperties(sellerRegisterForm,sellerInfo);
+        sellerInfo.setRank(Integer.parseInt(sellerRegisterForm.getRank()));
         return repository.save(sellerInfo);
     }
 

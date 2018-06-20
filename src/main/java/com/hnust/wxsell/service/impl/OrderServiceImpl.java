@@ -264,9 +264,9 @@ public class OrderServiceImpl implements OrderService {
         groupProductService.decreaseStock(cartDTOList,orderDTO.getGroupNo(),orderDTO.getSchoolNo());
         groupProductService.increaseSales(cartDTOList,orderDTO.getGroupNo(),orderDTO.getSchoolNo());
         //给卖家推送模板消息
-      /*  for (String openid: OpenidConstant.SELLEROPENID){
+        for (String openid: OpenidConstant.SELLEROPENID){
             pushMessageService.paid(orderDTO, openid);
-        }*/
+        }
 
         //给用户推送模板消息
         pushMessageService.orderStatus(orderDTO);
