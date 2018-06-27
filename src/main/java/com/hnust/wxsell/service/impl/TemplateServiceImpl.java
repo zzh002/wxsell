@@ -145,9 +145,9 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public TemplateDTO findBygroupNo(String schoolNo, String groupNo) {
+    public TemplateDTO findByTemplateName(String schoolNo, String templateName) {
         TemplateMaster templateMaster = templateMasterRepository.
-                findBySchoolNoAndTemplateName(schoolNo,groupNo);
+                findBySchoolNoAndTemplateName(schoolNo, templateName);
         List<TemplateDetail> templateDetailList = templateDetailRepository.
                 findByTemplateId(templateMaster.getTemplateId());
         TemplateDTO templateDTO = new TemplateDTO();
@@ -197,5 +197,13 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     public TemplateDetail save(TemplateDetail templateDetail) {
         return templateDetailRepository.save(templateDetail);
+    }
+
+    @Override
+    public void delete(TemplateDTO templateDTO) {
+        TemplateMaster templateMaster = new TemplateMaster();
+        BeanUtils.copyProperties(templateDTO,templateMaster);
+        templateDetailRepository.delete(templateDTO.getTemplateDetailList());
+        templateMasterRepository.delete(templateMaster);
     }
 }

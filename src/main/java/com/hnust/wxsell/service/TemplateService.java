@@ -16,7 +16,7 @@ public interface TemplateService {
     /** 根据配送单，新增模板 */
     TemplateDTO save(DispatchDTO dispatchDTO,String templateName);
 
-    /** 删除模板 */
+    /** 修改模板删除状态 */
     TemplateDTO delete(String templateId);
 
     /** 模板列表 */
@@ -25,7 +25,7 @@ public interface TemplateService {
     /** 查找某个模板 */
     TemplateDTO findOne(String templateId);
 
-    TemplateDTO findBygroupNo(String schoolNo , String groupNo);
+    TemplateDTO findByTemplateName(String schoolNo , String templateName);
 
     /** 根据模板生成补货单*/
     ReplenishDTO createReplenishByTemplate(String schoolNo ,String groupNo, String templateId);
@@ -35,4 +35,7 @@ public interface TemplateService {
 
     /** 保存模板详情信息*/
     TemplateDetail save(TemplateDetail templateDetail);
+
+    /** 彻底删除模板 **/
+    void delete(TemplateDTO templateDTO);
 }

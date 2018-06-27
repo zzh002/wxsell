@@ -39,6 +39,10 @@ public class ReplenishDTO {
     @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
+    /** 更新时间. */
+    @JsonSerialize(using = Date2LongSerializer.class)
+    private Date updateTime;
+
     /** 订单状态, 默认为0新下单. */
     private Integer replenishStatus;
 

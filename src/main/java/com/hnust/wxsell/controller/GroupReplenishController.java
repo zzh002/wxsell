@@ -76,11 +76,15 @@ public class GroupReplenishController {
             log.error("【创建订单】 购物车不能为空");
             throw new SellException(ResultEnum.REPLENISH_NOT_EXIST);
         }
-        replenishDTO.setGroupNo(replenishFrom.getGroupNo());
-        replenishDTO.setSchoolNo(sellerInfo.getSchoolNo());
-        replenishDTO.setUserName(sellerInfo.getName());
-        replenishDTO.setUserPhone(sellerInfo.getPhone());
-        replenishDTO.setOpenId(sellerInfo.getOpenid());
+        //查找相应寝室
+        GroupMasterDTO groupMasterDTO = groupMasterService.
+                findByGroupNoAndSchoolNo(replenishFrom.getGroupNo(),sellerInfo.getSchoolNo());
+
+        replenishDTO.setSchoolNo(groupMasterDTO.getSchoolNo());
+        replenishDTO.setGroupNo(groupMasterDTO.getGroupNo());
+        replenishDTO.setUserName(groupMasterDTO.getUserName());
+        replenishDTO.setUserPhone(groupMasterDTO.getUserPhone());
+        replenishDTO.setOpenId("seller");
         ReplenishDTO createResult = replenishService.create(replenishDTO);
 
         Map<String, String> map = new HashMap<>();
@@ -113,7 +117,10 @@ public class GroupReplenishController {
         GroupMasterDTO groupMasterDTO = groupMasterService.
                 findByGroupNoAndSchoolNo(userMaster.getGroupNo(),userMaster.getSchoolNo());
 
-        BeanUtils.copyProperties(groupMasterDTO,replenishDTO);
+        replenishDTO.setSchoolNo(groupMasterDTO.getSchoolNo());
+        replenishDTO.setGroupNo(groupMasterDTO.getGroupNo());
+        replenishDTO.setUserName(groupMasterDTO.getUserName());
+        replenishDTO.setUserPhone(groupMasterDTO.getUserPhone());
         replenishDTO.setOpenId(userMaster.getOpenId());
 
         ReplenishDTO createResult = replenishService.create(replenishDTO);

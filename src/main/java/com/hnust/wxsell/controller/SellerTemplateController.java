@@ -9,6 +9,7 @@ import com.hnust.wxsell.dataobject.TemplateDetail;
 import com.hnust.wxsell.dataobject.TemplateMaster;
 import com.hnust.wxsell.dto.ProductDTO;
 import com.hnust.wxsell.dto.TemplateDTO;
+import com.hnust.wxsell.enums.DeleteStatusEnum;
 import com.hnust.wxsell.enums.ResultEnum;
 import com.hnust.wxsell.exception.SellException;
 
@@ -43,6 +44,7 @@ public class SellerTemplateController {
     private UserTokenService userTokenService;
     @Autowired
     private ProductService productService;
+
 
 
     /**
@@ -177,7 +179,24 @@ public class SellerTemplateController {
         SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
         // 2.解析Json数据
         TemplateDTO templateDTO = TemplateForm2TemplateDTOConverter.convert(templateForm);
-        //3.保存模板信息
+        //3.判断是否存在已删除模板
+        TemplateDTO result = templateService.findByTemplateName(sellerInfo.getSchoolNo(),templateForm.getTemplateName());
+        if (result != null){
+            if (result.getDeleteStatus().equals(DeleteStatusEnum.DELETED.getCode())){
+                try {
+                  /*  for (TemplateDetail detail : details){
+                        templateDetailRepository.delete(detail);
+                    }*/
+                   templateService.delete(result);
+                } catch (SellException e){
+                    throw new SellException(ResultEnum.TEMPLATE_UPDATE_FAIL.getCode(),ResultEnum.TEMPLATE_UPDATE_FAIL.getMessage());
+                }
+            }else {
+                throw new SellException(ResultEnum.TEMPLATE_EXIST.getCode(),ResultEnum.TEMPLATE_EXIST.getMessage());
+            }
+
+        }
+        //4.保存模板信息
         TemplateMaster templateMaster = new TemplateMaster();
         templateMaster.setTemplateId(KeyUtil.genUniqueKey());
         templateMaster.setSchoolNo(sellerInfo.getSchoolNo());
