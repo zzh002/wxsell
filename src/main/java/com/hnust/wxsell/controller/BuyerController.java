@@ -2,11 +2,13 @@ package com.hnust.wxsell.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
+@CrossOrigin
 @Controller
 @RequestMapping("/buyer")
 @Slf4j

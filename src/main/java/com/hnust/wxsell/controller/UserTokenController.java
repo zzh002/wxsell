@@ -31,6 +31,7 @@ import java.util.concurrent.TimeUnit;
  * @author ZZH
  * @date 2018/4/5 0005 13:26
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/token")
 @Slf4j
@@ -65,10 +66,7 @@ public class UserTokenController {
      * @return
      */
     @PostMapping(value = "/MaCreate")
-    public String token(@RequestBody String getCode,
-                        HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+    public String token(@RequestBody String getCode) {
         // 获取json中的某个属性,3步 1.获取转换器 2.转换成jsonElement 3.转换成jsonObject
         String code = JsonUtil.getKeyValue(getCode,"code");
 
@@ -108,10 +106,7 @@ public class UserTokenController {
      * @return
      */
     @PostMapping(value = "/verify")
-    public ResultVO verify(@RequestBody String getToken,
-                           HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+    public ResultVO verify(@RequestBody String getToken) {
         String token = JsonUtil.getKeyValue(getToken,"token");
         userTokenService.getTokenValue(token);
 

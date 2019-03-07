@@ -32,6 +32,7 @@ import java.util.Map;
  * @author ZZH
  * @date 2018/4/8 0008 21:30
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/buyer/replenish")
 @Slf4j
@@ -56,11 +57,7 @@ public class GroupReplenishController {
     @PostMapping("/MaCreate")
     public ResultVO<Map<String, String>> MaCreate(@Valid ReplenishFrom replenishFrom,
                                                   @RequestParam("token") String token,
-                                                  BindingResult bindingResult,
-                                                  HttpServletResponse response){
-
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+                                                  BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             log.error("【创建订单】参数不正确, orderForm={}", replenishFrom);
             throw new SellException(ResultEnum.PARAM_ERROR.getCode(),
@@ -96,11 +93,7 @@ public class GroupReplenishController {
     @PostMapping("/WxCreate")
     public ResultVO<Map<String, String>> WxCreate(@Valid ReplenishFrom replenishFrom,
                                                   @RequestParam("token") String token,
-                                                  BindingResult bindingResult,
-                                                  HttpServletResponse response){
-
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+                                                  BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             log.error("【创建订单】参数不正确, orderForm={}", replenishFrom);
             throw new SellException(ResultEnum.PARAM_ERROR.getCode(),

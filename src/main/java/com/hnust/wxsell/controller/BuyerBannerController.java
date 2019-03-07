@@ -9,15 +9,13 @@ import com.hnust.wxsell.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author ZZH
  * @date 2018/4/3 0003 22:15
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/buyer/banner")
 @Slf4j

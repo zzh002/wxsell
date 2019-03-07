@@ -64,14 +64,36 @@ public class GroupProductServiceImpl implements GroupProductService {
     public void increaseStock(List<CartDTO> cartDTOList, String groupNo, String schoolNo) {
 
         for (CartDTO cartDTO: cartDTOList) {
-            GroupProduct groupProduct = groupProductRepository.findBySchoolNoAndGroupNoAndProductId(schoolNo,groupNo ,cartDTO.getProductId());
-            if (groupProduct == null) {
-                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+            //加锁
+            GroupProduct groupProduct = groupProductRepository.
+                    findBySchoolNoAndGroupNoAndProductId(schoolNo,groupNo ,cartDTO.getProductId());
+            String key = groupProduct.getId();
+            long time = System.currentTimeMillis() + TIMEOUT;
+            try {
+                while(true) {
+                    if(redisLock.lock(key,String.valueOf(time))){
+                        groupProduct = groupProductRepository.
+                                findBySchoolNoAndGroupNoAndProductId(schoolNo,groupNo ,cartDTO.getProductId());
+                        if (groupProduct == null) {
+                            throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+                        }
+                        Integer result = groupProduct.getProductStock() + cartDTO.getProductQuantity();
+                        groupProduct.setProductStock(result);
+                        groupProductRepository.save(groupProduct);
+
+                        break;
+                    }
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                //解锁
+                redisLock.unlock(key, String.valueOf(time));
             }
-            Integer result = groupProduct.getProductStock() + cartDTO.getProductQuantity();
-            groupProduct.setProductStock(result);
-            groupProductRepository.save(groupProduct);
         }
+
+
     }
 
     @Override
@@ -79,27 +101,35 @@ public class GroupProductServiceImpl implements GroupProductService {
     public void decreaseStock(List<CartDTO> cartDTOList, String groupNo, String schoolNo) {
         for (CartDTO cartDTO: cartDTOList) {
             //加锁
+            GroupProduct groupProduct = groupProductRepository.
+                    findBySchoolNoAndGroupNoAndProductId(schoolNo,groupNo ,cartDTO.getProductId());
+            String key = groupProduct.getId();
             long time = System.currentTimeMillis() + TIMEOUT;
-            if(!redisLock.lock(cartDTO.getProductId(),String.valueOf(time))){
-                throw new SellException(ResultEnum.DECREASE_STOCK_ERROR);
+            try {
+                while(true) {
+                    if(redisLock.lock(key,String.valueOf(time))){
+                        groupProduct =  groupProductRepository.
+                                findBySchoolNoAndGroupNoAndProductId(schoolNo,groupNo,cartDTO.getProductId());
+                        if (groupProduct == null) {
+                            throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+                        }
+                        Integer result = groupProduct.getProductStock() - cartDTO.getProductQuantity();
+                        if (result < 0) {
+                            throw new SellException(ResultEnum.PRODUCT_STOCK_ERROR);
+                        }
+                        groupProduct.setProductStock(result);
+                        groupProductRepository.save(groupProduct);
+
+                        break;
+                    }
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                //解锁
+                redisLock.unlock(key, String.valueOf(time));
             }
-
-            GroupProduct groupProduct =  groupProductRepository.findBySchoolNoAndGroupNoAndProductId(schoolNo,groupNo,cartDTO.getProductId());
-            if (groupProduct == null) {
-                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
-            }
-
-            Integer result = groupProduct.getProductStock() - cartDTO.getProductQuantity();
-            if (result < 0) {
-                throw new SellException(ResultEnum.PRODUCT_STOCK_ERROR);
-            }
-
-            groupProduct.setProductStock(result);
-
-            groupProductRepository.save(groupProduct);
-
-            //解锁
-            redisLock.unlock(cartDTO.getProductId(), String.valueOf(time));
         }
     }
 
@@ -193,14 +223,36 @@ public class GroupProductServiceImpl implements GroupProductService {
     @Transactional
     public void increaseSales(List<CartDTO> cartDTOList, String groupNo, String schoolNo) {
         for (CartDTO cartDTO: cartDTOList) {
-            GroupProduct groupProduct = groupProductRepository.findBySchoolNoAndGroupNoAndProductId(schoolNo,groupNo ,cartDTO.getProductId());
-            if (groupProduct == null) {
-                //TODO
-                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+            //加锁
+            GroupProduct groupProduct = groupProductRepository.
+                    findBySchoolNoAndGroupNoAndProductId(schoolNo,groupNo ,cartDTO.getProductId());
+            String key = groupProduct.getId();
+            long time = System.currentTimeMillis() + TIMEOUT;
+            try {
+                while(true) {
+                    if(redisLock.lock(key,String.valueOf(time))){
+
+                        groupProduct = groupProductRepository.
+                                findBySchoolNoAndGroupNoAndProductId(schoolNo,groupNo ,cartDTO.getProductId());
+                        if (groupProduct == null) {
+                            //TODO
+                            throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+                        }
+                        Integer result = groupProduct.getProductSales() + cartDTO.getProductQuantity();
+                        groupProduct.setProductSales(result);
+                        groupProductRepository.save(groupProduct);
+
+                        break;
+                    }
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                //解锁
+                redisLock.unlock(key, String.valueOf(time));
             }
-            Integer result = groupProduct.getProductSales() + cartDTO.getProductQuantity();
-            groupProduct.setProductSales(result);
-            groupProductRepository.save(groupProduct);
+
         }
     }
 
@@ -210,27 +262,35 @@ public class GroupProductServiceImpl implements GroupProductService {
 
         for (CartDTO cartDTO: cartDTOList) {
             //加锁
+            GroupProduct groupProduct = groupProductRepository.
+                    findBySchoolNoAndGroupNoAndProductId(schoolNo,groupNo ,cartDTO.getProductId());
+            String key = groupProduct.getId();
             long time = System.currentTimeMillis() + TIMEOUT;
-            if(!redisLock.lock(cartDTO.getProductId(),String.valueOf(time))){
-                throw new SellException(ResultEnum.DECREASE_STOCK_ERROR);
+            try {
+                while(true) {
+                    if(redisLock.lock(key,String.valueOf(time))){
+                        groupProduct =  groupProductRepository.
+                                findBySchoolNoAndGroupNoAndProductId(schoolNo,groupNo,cartDTO.getProductId());
+                        if (groupProduct == null) {
+                            throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+                        }
+                        Integer result = groupProduct.getProductSales() - cartDTO.getProductQuantity();
+                        if (result < 0) {
+                            throw new SellException(ResultEnum.PRODUCT_STOCK_ERROR);
+                        }
+                        groupProduct.setProductSales(result);
+                        groupProductRepository.save(groupProduct);
+
+                        break;
+                    }
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                //解锁
+                redisLock.unlock(key, String.valueOf(time));
             }
-
-            GroupProduct groupProduct =  groupProductRepository.findBySchoolNoAndGroupNoAndProductId(schoolNo,groupNo,cartDTO.getProductId());
-            if (groupProduct == null) {
-                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
-            }
-
-            Integer result = groupProduct.getProductSales() - cartDTO.getProductQuantity();
-            if (result < 0) {
-                throw new SellException(ResultEnum.PRODUCT_STOCK_ERROR);
-            }
-
-            groupProduct.setProductSales(result);
-
-            groupProductRepository.save(groupProduct);
-
-            //解锁
-            redisLock.unlock(cartDTO.getProductId(), String.valueOf(time));
         }
     }
 

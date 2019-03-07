@@ -34,6 +34,7 @@ import java.util.List;
  * @author ZZH
  * @date 2018/4/10 0010 14:54
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/seller/template")
 @Slf4j
@@ -160,16 +161,12 @@ public class SellerTemplateController {
      * @param templateForm
      * @param token
      * @param bindingResult
-     * @param response
      * @return
      */
     @PostMapping("/create")
     public ResultVO create(@Valid TemplateForm templateForm,
                            @RequestParam("token") String token,
-                           BindingResult bindingResult,
-                           HttpServletResponse response){
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+                           BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             log.error("【创建订单】参数不正确, orderForm={}", templateForm);
             return ResultVOUtil.error(ResultEnum.PARAM_ERROR.getCode(),

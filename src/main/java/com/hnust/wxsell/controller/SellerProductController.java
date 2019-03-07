@@ -31,6 +31,7 @@ import java.util.List;
  * @author ZZH
  * @date 2018/4/12 0012 21:08
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/seller/product")
 public class SellerProductController {
@@ -166,10 +167,7 @@ public class SellerProductController {
     public ResultVO save(@RequestParam(value = "file", required = false) MultipartFile file,
                          @Valid ProductForm form,
                          BindingResult bindingResult,
-                         HttpServletRequest request,
-                         HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+                         HttpServletRequest request) {
         SellerInfo sellerInfo = userTokenService.getSellerInfo(form.getToken());
         if (bindingResult.hasErrors()) {
             return ResultVOUtil.error(1003,"参数缺失");

@@ -12,10 +12,7 @@ import com.hnust.wxsell.service.UserTokenService;
 import com.hnust.wxsell.utils.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -26,6 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @author ZZH
  * @date 2018/4/11 0011 15:41
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/seller")
 public class SellerAdministratorController {
@@ -40,12 +38,9 @@ public class SellerAdministratorController {
     private UserTokenService userTokenService;
 
     @GetMapping("/admin")
-    public ResultVO admin(@RequestParam("openid") String openid,
-                          HttpServletResponse response) {
+    public ResultVO admin(@RequestParam("openid") String openid) {
 
         //1. openid去和数据库里的数据匹配
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
         SellerInfo sellerInfo = sellerService.findSellerInfoByOpenid(openid);
         if (sellerInfo == null) {
             return ResultVOUtil.error(ResultEnum.SELLER_NOT_EXIST.getCode(),

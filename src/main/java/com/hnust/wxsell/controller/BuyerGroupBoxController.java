@@ -9,6 +9,7 @@ import com.hnust.wxsell.service.BoxApplyService;
 import com.hnust.wxsell.utils.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
  * @author ZZH
  * @date 2018/4/3 0003 21:46
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/group/buyer")
 public class BuyerGroupBoxController {

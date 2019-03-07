@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
  * @author ZZH
  * @date 2018/4/13 0013 18:30
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/seller/replenish")
 @Slf4j
@@ -100,10 +101,7 @@ public class SellerReplenishController {
     @PostMapping("/finish")
     public ResultVO finish(@Valid ReplenishFrom replenishFrom,
                            @RequestParam("token") String token,
-                           BindingResult bindingResult,
-                           HttpServletResponse response){
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+                           BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             log.error("【创建订单】参数不正确, orderForm={}", replenishFrom);
             throw new SellException(ResultEnum.PARAM_ERROR.getCode(),

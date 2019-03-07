@@ -29,6 +29,7 @@ import java.util.Map;
  * @author ZZH
  * @date 2018/4/8 0008 20:18
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/buyer/order")
 @Slf4j
@@ -48,10 +49,8 @@ public class GroupOrderController {
     @PostMapping("/create")
     public ResultVO<Map<String, String>> create(@Valid OrderForm orderForm,
                                                 BindingResult bindingResult,
-                                                @RequestParam("token") String token,
-                                                HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+                                                @RequestParam("token") String token) {
+
         if (bindingResult.hasErrors()) {
             log.error("【创建订单】参数不正确, orderForm={}", orderForm);
             throw new SellException(ResultEnum.PARAM_ERROR.getCode(),

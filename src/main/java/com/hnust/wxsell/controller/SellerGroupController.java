@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
  * @author ZZH
  * @date 2018/4/11 0011 20:46
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/seller/group")
 @Slf4j
@@ -181,10 +182,7 @@ public class SellerGroupController {
     @PostMapping("/save")
     public ResultVO save(@Valid GroupMasterForm groupMasterForm,
                          @RequestParam("token") String token,
-                         BindingResult bindingResult,
-                         HttpServletResponse response){
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+                         BindingResult bindingResult){
         SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
         if (bindingResult.hasErrors()) {
             return ResultVOUtil.error(1003,"参数错误");
@@ -301,10 +299,7 @@ public class SellerGroupController {
     @PostMapping("/stockout")
     public ResultVO stockout(@Valid StockOutForm stockOutForm,
                              @RequestParam("token") String token,
-                             BindingResult bindingResult,
-                             HttpServletResponse response){
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+                             BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             log.error("【回收商品】参数不正确, stockOutForm={}", stockOutForm);
             throw new SellException(ResultEnum.PARAM_ERROR.getCode(),

@@ -18,10 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -30,6 +27,7 @@ import javax.validation.Valid;
  * @author ZZH
  * @date 2018/4/11 0011 15:02
  **/
+@CrossOrigin
 @Controller
 @RequestMapping("/seller")
 @Slf4j
@@ -52,12 +50,9 @@ public class SellerController {
      */
     @PostMapping("/login")
     public String login(@Valid SellerLoginForm sellerLoginForm,
-                        BindingResult bindingResult,
-                        HttpServletResponse response){
+                        BindingResult bindingResult){
 
         SellerInfo sellerInfo = new SellerInfo();
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
         if (bindingResult.hasErrors()) {
             throw new SellException(ResultEnum.PARAM_ERROR.getCode(),
                     bindingResult.getFieldError().getDefaultMessage());
@@ -89,12 +84,9 @@ public class SellerController {
      */
     @PostMapping("/register")
     public String register(@Valid SellerRegisterForm sellerRegisterForm,
-                          BindingResult bindingResult,
-                           HttpServletResponse response){
+                          BindingResult bindingResult){
 
         SellerInfo sellerInfo = new SellerInfo();
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
         if (bindingResult.hasErrors()) {
             throw new SellException(ResultEnum.PARAM_ERROR.getCode(),
                     bindingResult.getFieldError().getDefaultMessage());
@@ -121,12 +113,9 @@ public class SellerController {
     @PostMapping("/update")
     @ResponseBody
     public ResultVO update(@Valid SellerUpdateForm sellerUpdateForm,
-                         BindingResult bindingResult,
-                           HttpServletResponse response){
+                         BindingResult bindingResult){
 
         SellerInfo sellerInfo = new SellerInfo();
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
         if (bindingResult.hasErrors()) {
             throw new SellException(ResultEnum.PARAM_ERROR.getCode(),
                     bindingResult.getFieldError().getDefaultMessage());

@@ -27,6 +27,7 @@ import java.util.Map;
  * @author ZZH
  * @date 2018/4/8 0008 13:33
  **/
+@CrossOrigin
 @Controller
 @RequestMapping("/pay")
 @Slf4j
@@ -59,10 +60,7 @@ public class PayController {
      * @param notifyData
      */
     @PostMapping("/notify")
-    public ModelAndView notify(@RequestBody String notifyData,
-                               HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+    public ModelAndView notify(@RequestBody String notifyData) {
         try {
             payService.notify(notifyData);
         }catch (RuntimeException e){

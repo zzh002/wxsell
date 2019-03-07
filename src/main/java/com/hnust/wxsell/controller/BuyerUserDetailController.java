@@ -24,6 +24,7 @@ import javax.validation.Valid;
  * @author ZZH
  * @date 2018/4/5 0005 12:57
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/buyer/user")
 @Slf4j
@@ -39,10 +40,8 @@ public class BuyerUserDetailController {
     @PostMapping(value = "/address/create")
     public ResultVO addressCreate(@Valid  UserDetailFrom userDetailFrom,
                                   BindingResult bindingResult,
-                                  @RequestParam("token") String token,
-                                  HttpServletResponse response){
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+                                  @RequestParam("token") String token){
+
         // 1.验证地址参数
         if (bindingResult.hasErrors()) {
             log.error("【保存用户地址】参数不正确, userDetailFrom={}", userDetailFrom);

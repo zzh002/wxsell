@@ -22,6 +22,7 @@ import java.util.List;
  * @author ZZH
  * @date 2018/4/11 0011 20:19
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/seller/category")
 public class SellerCategoryController {
@@ -69,10 +70,7 @@ public class SellerCategoryController {
      */
     @PostMapping("/save")
     public ResultVO save(@Valid CategoryForm form,
-                         BindingResult bindingResult,
-                         HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResultVOUtil.error(1003,"缺失参数");
         }

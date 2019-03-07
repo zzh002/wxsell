@@ -31,6 +31,7 @@ import java.util.Map;
  * @author ZZH
  * @date 2018/4/13 0013 19:38
  **/
+@CrossOrigin
 @RestController
 @RequestMapping("/seller/dispatch")
 @Slf4j
@@ -147,10 +148,7 @@ public class SellerDispatchController {
     @RequestMapping("/create")
     public ResultVO create(@Valid ReplenishFrom replenishFrom,
                            @RequestParam("token") String token,
-                           BindingResult bindingResult,
-                           HttpServletResponse response){
-        response.addHeader("Access-Control-Allow-Origin","*");
-        response.addHeader("Access-Control-Methods","GET,POST,OPTIONS,DELETE,PUT");
+                           BindingResult bindingResult){
         SellerInfo sellerInfo = userTokenService.getSellerInfo(token);
         if (bindingResult.hasErrors()) {
             log.error("【创建订单】参数不正确, orderForm={}", replenishFrom);
